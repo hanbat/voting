@@ -3,20 +3,22 @@
     <title>Voting system for ECE 458</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="static/css/main.css" rel="stylesheet">
   </head>
   <body>
     <div class="container">
-      <h1>Please carefully select for your candidate...</h1>
+      <h1>Welcome! {{ user }}! Please carefully select for your candidate...</h1>
       <br>
       <form action="" method="post">
         <ol type="1">
-          <li>Barack Obama</li>
-          <li>Donald Trump</li>
-          <li>George W. Bush</li>
-          <li>Hilary Clinton</li>
-          <li>Kim Jong Eun</li>
-          <li>Justin Trudeau</li>
+          <li><input type="radio" name="candidate" value="1" id="1"/>      Barack Obama</li>
+          <li><input type="radio" name="candidate" value="2" id="2"/>      Donald Trump</li>
+          <li><input type="radio" name="candidate" value="3" id="3"/>      George W. Bush</li>
+          <li><input type="radio" name="candidate" value="4" id="4"/>      Hilary Clinton</li>
+          <li><input type="radio" name="candidate" value="5" id="5"/>      Kim Jong Eun</li>
+          <li><input type="radio" name="candidate" value="6" id="6"/>      Justin Trudeau</li>
         </ol>
+        <input class="btn btn-default" type="submit" value="Submit">
       </form>
     </div>
   </body>
