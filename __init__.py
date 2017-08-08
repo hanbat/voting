@@ -3,7 +3,7 @@ from flask_bcrypt import Bcrypt
 from flaskext.mysql import MySQL
 import sqlite3
 import hashlib
-
+import web
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 mysql = MySQL(app)
@@ -46,12 +46,16 @@ def login():
         if completion ==False:
             error = 'Invalid Credentials. Please try again.'
         else:
+        	web.setcookie('usr', expires=3600, domain='localhost')
+        	#get cookie web.cookies().get(cookieName)
             return redirect(url_for('vote', user=username))
     return render_template('login.html', error=error)
 
 @app.route('/vote', methods=['POST', 'GET'])
 def vote():
-    username = request.args['user']
+	usrcookie = web.cookies().get('usr')
+	if  usrcookie:
+    username = request.args['user'] 
     query = "select token from users where username = '" + username + "'"
     cur.execute(query)
     res = cur.fetchone()
@@ -73,6 +77,8 @@ def vote():
             print "user ALREADY VOTED!!!"
         return redirect(url_for('error'))
     return render_template('ballot.html', user= username)
+	else:
+	return render_template('login.html', error=error)
 
 
 @app.route('/logout')
