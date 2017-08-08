@@ -68,10 +68,11 @@ def vote():
             query = "insert into votes (token, selection) values ('" + token + "'," + ballot + ")"
             cur.execute(query)
             conn.commit()
+            return redirect(url_for('logout'))
         # user already voted..
         else :
             print "user ALREADY VOTED!!!"
-        return redirect(url_for('error'))
+            return redirect(url_for('error'))
     return render_template('ballot.html', user= username)
 
 
