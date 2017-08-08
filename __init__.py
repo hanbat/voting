@@ -3,6 +3,8 @@ from flask_bcrypt import Bcrypt
 from flaskext.mysql import MySQL
 import sqlite3
 import hashlib
+import uuid
+import random
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -34,6 +36,25 @@ def validate(username, password):
     if dbUser==username:
         completion = check_password(dbPass, password)
     return completion
+
+def add_user(name, pw):
+    pw_hash = bcrypt.generate_password_hash(pw)
+    cur.execute("INSERT INTO users (id, username,password, flag, date, token) VALUES (%s,%s,%s,0,0,0)", [str(random.randint(0,99999)),name,pw_hash])
+    conn.commit()
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    error = None
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        completion = add_user(username, password)
+        if completion ==False:
+            error = 'Already Signed Up. Please try again.'
+        else:
+            return 'Successfully signed up!!';
+    return render_template('signup.html', error=error)
+
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
