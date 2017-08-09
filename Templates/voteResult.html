@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <title>Vote result page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Result for your vote is shown...!!</h1>
+      <br>
+      <li>Barack Obama : <p id="1"></p></li>
+      <li>Donald Trump : <p id="2"></p></li>
+      <li>George W. Bush : <p id="3"></p></li>
+      <li>Hilary Clinton : <p id="4"></p></li>
+      <li>Kim Jong Eun : <p id="5"></p></li>
+      <li>Justin Trudeau : <p id="6"></p></li>
+      <li>Justin Trudeau : <p id="7"></p></li>
+    </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="{{url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
+    <script type=text/javascript>
+      $(document).ready(function(){
+
+          console.log('ready!!!');
+            $.ajax({
+              type: "GET",
+              url: "http://34.212.234.53:5000/tally"
+            }).then(function(data){
+              var res = jQuery.parseJSON(data);
+              res.forEach(function(item){
+                  var query = '#' + item.vote;
+                  $(query).text(item.score);
+              });
+
+            });
+        });
+    </script>
+  </body>
+</html>

@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Flask Intro - login page</title>
+    <title>Login page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
   </head>
@@ -13,11 +13,65 @@
           request.form.username }}">
          <input type="password" placeholder="Password" name="password" value="{{
           request.form.password }}">
-        <input class="btn btn-default" type="submit" value="Login">
+        <input class="btn btn-default" type="submit" id="login" value="Login">
+        <input class="btn btn-default" type="submit" id="register" value="Register" style="visibility: hidden">
       </form>
       {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}
       {% endif %}
     </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="{{url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
+    <script type=text/javascript>
+        $('#register').click(function(){
+            var url = $(location).attr('href') + 'register';
+            $(location).attr('href', url);
+             // window.location.href = url;
+            return false;
+          })
+
+        $('#login').click(function(){
+            var username = $('input[name="username"]').val();
+            var password = $('input[name="password"]').val();
+            var jsonObject = new Object();
+            jsonObject.username = username;
+            jsonObject.password = password;
+            var myString = JSON.stringify(jsonObject);
+
+            $.ajax({
+                type: "POST",
+                url: "http://52.42.33.234:8000/signin",
+                data: myString,
+                dataType: "json",
+                async: false,
+                contentType: "application/json",
+                success: function (data1) {
+                  //invalid user
+                  if(data1 === null){
+                    alert("invalid credential...");
+                  } else {
+                     var url = $(location).attr('href') + 'vote';
+                     $(location).attr('href', url);
+                     $('#register').trigger("click");
+                  }
+                },
+                error: function (request, status, errorThrown) {
+                  alert("Problems with API...");
+                  // window.location.href = url;
+
+                }
+            });
+
+        })
+
+        // var redirecting = function(){
+        //   console.log("function!!!!");
+        //     var url = $(location).attr('href') + 'register';
+        //     $(location).attr('href', url);
+        //     return false;
+        // }
+
+
+    </script>
   </body>
 </html>
