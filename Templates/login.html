@@ -13,6 +13,7 @@
         <input type="password" placeholder="Password" name="password" value="{{ request.form.password }}">
         <input class="btn btn-default" type="submit" id="login" value="Get token">
         <input class="btn btn-default" type="submit" id="vote" value="Go to voting page">
+        <input class="btn btn-default" type="submit" id="result" value="Vote Result">
     </form>
     {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}
@@ -22,10 +23,9 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="{{url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
 <script type=text/javascript>
-    $('#register').click(function () {
-        var url = $(location).attr('href') + 'register';
-        $(location).attr('href', url);
-        // window.location.href = url;
+
+    $(document).ready(function(){
+        localStorage.removeItem("token");
         return false;
     });
 
@@ -69,6 +69,47 @@
         var url = $(location).attr('href') + 'vote';
         $(location).attr('href', url);
         return false;
+    });
+
+
+    $('#result').click(function () {
+
+        var voteEnabled = false;
+
+         $.ajax({
+            type: "GET",
+            url: "http://34.212.234.53:5000/voteEnabled",
+            success: function (data1) {
+                //you cannot vote
+                if (data1 == 0) {
+                    // alert("VOTING period is over...!!");
+                    voteEnabled = true;
+                } else {
+                    alert("VOTING period is NOT over...!! Please wait...");
+                }
+            },
+            error: function (request, status, errorThrown) {
+                $('#feedback').text("Problems with API...");
+                alert("Problems with API...");
+                // window.location.href = url;
+
+            }
+        }).then(function(){
+            if(voteEnabled){
+                var url = $(location).attr('href') + 'voteResult';
+                $(location).attr('href', url);
+                return false;
+             }
+             
+        });
+
+         // if(voteEnabled){
+         //    var url = $(location).attr('href') + 'voteResult';
+         //    $(location).attr('href', url);
+         //    return false;  
+         // }
+
+         return false;
     });
 
     // var redirecting = function(){

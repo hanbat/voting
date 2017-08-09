@@ -7,7 +7,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>Welcome! {{ user }}! Please carefully select for your candidate...</h1>
+    <h1>Welcome! Please carefully select for your candidate...</h1>
     <br>
     <form action="" method="post">
         <ol type="1">
@@ -46,8 +46,8 @@
                 async: false,
                 success: function (data) {
                     if (data == -1) {
-                        $('#feedback').text("You don't have a token yet, please authenticate first");
-                        alert("You don't have a token yet, please authenticate first");
+                        $('#feedback').text("Either you VOTED, or you do NOT have valid TOKEN...");
+                        alert("Vote FAILED!!! \n Either you VOTED, or you do NOT have valid TOKEN...");
                     } else {
                         alert("Your vote is submitted");
                         $('#feedback').text("Your vote is submitted");

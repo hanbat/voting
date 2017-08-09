@@ -21,18 +21,58 @@
     <script type=text/javascript>
       $(document).ready(function(){
 
-          console.log('ready!!!');
-            $.ajax({
-              type: "GET",
-              url: "http://34.212.234.53:5000/tally"
-            }).then(function(data){
-              var res = jQuery.parseJSON(data);
-              res.forEach(function(item){
-                  var query = '#' + item.vote;
-                  $(query).text(item.score);
-              });
+          var voteEnabled = false;
 
-            });
+           $.ajax({
+              type: "GET",
+              url: "http://34.212.234.53:5000/voteEnabled",
+              success: function (data1) {
+                  //you cannot vote
+                  if (data1 == 0) {
+                      // alert("VOTING period is over...!!");
+                      voteEnabled = true;
+                  } else {
+                      alert("VOTING period is NOT over...!! Please wait...");
+                  }
+              },
+              error: function (request, status, errorThrown) {
+                  $('#feedback').text("Problems with API...");
+                  alert("Problems with API...");
+                  // window.location.href = url;
+
+              }
+          }).then(function(){
+              if(!voteEnabled){
+                  var url = $(location).attr('href').replace('/voteResult', '');
+                  $(location).attr('href', url);
+                  return false;
+               } else{
+                   $.ajax({
+                      type: "GET",
+                      url: "http://34.212.234.53:5000/tally"
+                    }).then(function(data){
+                      var res = jQuery.parseJSON(data);
+                      res.forEach(function(item){
+                          var query = '#' + item.vote;
+                          $(query).text(item.score);
+                      });
+                  });
+               }
+          });
+
+          // console.log('ready!!!');
+          return false;
+            // $.ajax({
+            //   type: "GET",
+            //   url: "http://34.212.234.53:5000/tally"
+            // }).then(function(data){
+            //   var res = jQuery.parseJSON(data);
+            //   res.forEach(function(item){
+            //       var query = '#' + item.vote;
+            //       $(query).text(item.score);
+            //   });
+
+            // });
         });
     </script>
   </body>
