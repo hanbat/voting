@@ -12,7 +12,7 @@
         <input type="text" placeholder="Username" name="username" value="{{ request.form.username }}">
         <input type="password" placeholder="Password" name="password" value="{{ request.form.password }}">
         <input class="btn btn-default" type="submit" id="login" value="Get token">
-        <input class="btn btn-default" type="submit" id="register" value="Register" style="visibility: hidden">
+        <input class="btn btn-default" type="submit" id="vote" value="Go to voting page">
     </form>
     {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}
@@ -44,25 +44,29 @@
             url: "http://52.42.33.234:8000/signin",
             data: myString,
             dataType: "json",
-{#            async: false,#}
+            {#            async: false,#}
             contentType: "application/json",
             success: function (data1) {
                 //invalid user
                 if (data1 === null) {
-                    alert("invalid credential...");
+                    $('#feedback').text("Invalid credentials")
                 } else {
-                    $('#feedback').text("Token : " + data1)
-{#                    var url = $(location).attr('href') + 'vote';#}
-{#                    $(location).attr('href', url);#}
-{#                    $('#register').trigger("click");#}
+                    $('#feedback').text("Token : " + data1);
+                    localStorage.token = data1;
                 }
             },
             error: function (request, status, errorThrown) {
-                alert("Problems with API...");
+                $('#feedback').text("Problems with API...");
                 // window.location.href = url;
 
             }
         });
+        return false;
+    });
+
+    $('#vote').click(function () {
+        var url = $(location).attr('href') + 'vote';
+        $(location).attr('href', url);
         return false;
     });
 
