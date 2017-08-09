@@ -27,40 +27,46 @@
 <script>window.jQuery || document.write('<script src="{{url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
 <script type=text/javascript>
 
-    $('#submit').click(function () {
-
-        var voted = $('input[name=candidate]:checked').val();
-
-        $.ajax({
-            type: "GET",
-            url: "http://34.212.234.53:5000/vote?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJvYiIsInBhc3N3b3JkIjoiMTIzNDU2In0.kej01APnU1h8DCEo4sUW12cOWh6fNfr01fdAO5VcmVU&vote=" + voted,
-            async: false,
-            success: function (data) {
-                alert(data);
-                if (data == -1) {
-                    var url = $(location).attr('href');
-                    url = url.replace('vote', 'error');
-                    $(location).attr('href', url);
-                    return false;
-                } else {
-                    var url = $(location).attr('href');
-                    url = url.replace('vote', 'finish');
-                    $(location).attr('href', url);
-                    return false;
-                }
-            },
-            error: function (err) {
-                alert("api is wrong...");
-            }
-        });
-    });
-
     $(function () {
         var token = localStorage.token;
         if (token == null)
             $('#feedback').text("You don't have a token yet, please authenticate first");
         else
-            $('#feedback').text("Token stored: " + token);
+            $('#feedback').text("Token stored (can only be used once): " + token);
+
+
+        $('#submit').click(function () {
+
+            var voted = $('input[name=candidate]:checked').val();
+            var token = localStorage.token;
+
+            $.ajax({
+                type: "GET",
+                url: "http://34.212.234.53:5000/vote?token=" + token + "&vote=" + voted,
+                async: false,
+                success: function (data) {
+{#                    alert(data);#}
+                    if (data == -1) {
+                        $('#feedback').text("You don't have a token yet, please authenticate first");
+                        {#                    var url = $(location).attr('href');#}
+                        {#                    url = url.replace('vote', 'error');#}
+                        {#                    $(location).attr('href', url);#}
+                        return false;
+                    } else {
+                        $('#feedback').text("Your vote is submitted");
+                        localStorage.removeItem("token");
+                        {#                    var url = $(location).attr('href');#}
+                        {#                    url = url.replace('vote', 'finish');#}
+                        {#                    $(location).attr('href', url);#}
+                        return false;
+                    }
+                },
+                error: function (err) {
+                    alert("api is wrong...");
+                }
+            });
+            return false;
+        });
     });
 
 
