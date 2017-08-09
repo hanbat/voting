@@ -11,15 +11,16 @@
     <br>
     <form action="" method="post">
         <ol type="1">
-            <li><input type="radio" name="candidate" value="1" id="1"/> Barack Obama</li>
-            <li><input type="radio" name="candidate" value="2" id="2"/> Donald Trump</li>
-            <li><input type="radio" name="candidate" value="3" id="3"/> George W. Bush</li>
-            <li><input type="radio" name="candidate" value="4" id="4"/> Hilary Clinton</li>
-            <li><input type="radio" name="candidate" value="5" id="5"/> Kim Jong Eun</li>
-            <li><input type="radio" name="candidate" value="6" id="6"/> Justin Trudeau</li>
-            <li><input type="radio" name="candidate" value="7" id="7"/> Anselme</li>
+            <li style="font-size: 30px;"><input type="radio" name="candidate" value="1" id="1"/> Barack Obama</li>
+            <li style="font-size: 30px;"><input type="radio" name="candidate" value="2" id="2"/> Donald Trump</li>
+            <li style="font-size: 30px;"><input type="radio" name="candidate" value="3" id="3"/> George W. Bush</li>
+            <li style="font-size: 30px;"><input type="radio" name="candidate" value="4" id="4"/> Hilary Clinton</li>
+            <li style="font-size: 30px;"><input type="radio" name="candidate" value="5" id="5"/> Kim Jong Eun</li>
+            <li style="font-size: 30px;"><input type="radio" name="candidate" value="6" id="6"/> Justin Trudeau</li>
+            <li style="font-size: 30px;"><input type="radio" name="candidate" value="7" id="7"/> Theresa May</li>
         </ol>
         <input class="btn btn-default" type="submit" id="submit" value="Vote">
+        <input class="btn btn-default" type="submit" id="authenticate" value="Authenticate">
     </form>
     <p id="feedback"></p>
 </div>
@@ -62,6 +63,12 @@
             return false;
         });
     });
+
+    $('#authenticate').click(function(){
+        var url = $(location).attr('href').replace('/vote', '');
+        window.location.href = url;
+        return false;  
+    })
 
 
 </script>
