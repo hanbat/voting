@@ -1,10 +1,10 @@
 from flask import Flask, render_template, redirect, url_for, request, g
 from flask_bcrypt import Bcrypt
-from flaskext.mysql import MySQL
+#from flaskext.mysql import MySQL
 import sqlite3
 import hashlib
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='Templates')
 # bcrypt = Bcrypt(app)
 # mysql = MySQL(app)
 
