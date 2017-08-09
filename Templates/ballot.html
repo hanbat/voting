@@ -32,21 +32,25 @@
             $.ajax({
               type: "GET",
               url: "http://34.212.234.53:5000/vote?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJvYiIsInBhc3N3b3JkIjoiMTIzNDU2In0.kej01APnU1h8DCEo4sUW12cOWh6fNfr01fdAO5VcmVU&vote=" + voted,
-              async : false
-            }).then(function(data){
-                 var url = $(location).attr('href');
-                  //did NOT work
-                  if(data1 == -1){
+              async : false,
+              success : function(data){
+                alert(data);
+                  if(data == -1){
+                      var url = $(location).attr('href');
                       url = url.replace('vote', 'error')
                       $(location).attr('href', url);
                       return false;
                   } else{
+                    var url = $(location).attr('href');
                     url = url.replace('vote', 'finish')
-                      $(location).attr('href', url);
-                      return false;
+                    $(location).attr('href', url);
+                    return false;
                   }
+              },
+              error : function(err){
+                  alert("api is wrong...");
+              }
             });
-
         });
 
       </script>
