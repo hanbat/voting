@@ -50,6 +50,7 @@
                 //invalid user
                 if (data1 === null) {
                     $('#feedback').text("Invalid credentials")
+                    localStorage.removeItem("token");
                 } else {
                     $('#feedback').text("Token : " + data1);
                     localStorage.token = data1;

@@ -34,7 +34,6 @@
         else
             $('#feedback').text("Token stored (can only be used once): " + token);
 
-
         $('#submit').click(function () {
 
             var voted = $('input[name=candidate]:checked').val();
@@ -45,26 +44,21 @@
                 url: "http://34.212.234.53:5000/vote?token=" + token + "&vote=" + voted,
                 async: false,
                 success: function (data) {
-{#                    alert(data);#}
                     if (data == -1) {
                         $('#feedback').text("You don't have a token yet, please authenticate first");
-                        {#                    var url = $(location).attr('href');#}
-                        {#                    url = url.replace('vote', 'error');#}
-                        {#                    $(location).attr('href', url);#}
-                        return false;
+                        alert("You don't have a token yet, please authenticate first");
                     } else {
+                        alert("Your vote is submitted");
                         $('#feedback').text("Your vote is submitted");
                         localStorage.removeItem("token");
-                        {#                    var url = $(location).attr('href');#}
-                        {#                    url = url.replace('vote', 'finish');#}
-                        {#                    $(location).attr('href', url);#}
-                        return false;
                     }
                 },
                 error: function (err) {
                     alert("api is wrong...");
                 }
             });
+            var url = $(location).attr('href').replace('/vote', '');
+            window.location.href = url;
             return false;
         });
     });
